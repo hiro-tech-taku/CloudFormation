@@ -1,4 +1,3 @@
-### This policy allow all resources to do five actions about cloudwatch.
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -14,5 +13,5 @@
         "Resource": "*"
       }
     ]
-  }
+}
   
