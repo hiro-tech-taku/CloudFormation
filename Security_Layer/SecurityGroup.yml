@@ -1,0 +1,18 @@
+Type: AWS::EC2::SecurityGroup
+Properties:
+  GroupDescription: SecurityGroup for EC2
+  GroupName: SG-hirose
+  SecurityGroupIngress:
+  IpProtocol: tcp
+  FromPort: 22
+  ToPort: 22
+  CidrIp: 0.0.0.0/0
+  Tags: 
+    - Key: Name
+      Value: SGForEC2
+  VpcId: !ImportValue VPC-hirose
+
+    Output:
+    Value: SG-hirose
+    Export: 
+      Name:SG-hirose

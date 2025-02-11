@@ -49,3 +49,14 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
+
+Outputs:
+  myVPC:
+    Value: VPC
+    Export:
+      Name:VPC-hirose 
+
+  PublicSubnet1:
+    Value: PublicSubnet1
+    Export:
+      Name: PubSubName
