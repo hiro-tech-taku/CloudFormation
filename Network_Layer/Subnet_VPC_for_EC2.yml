@@ -8,12 +8,12 @@ Parameters:
   VpcCIDR:
     Description: Please enter the IP range (CIDR notation) for this VPC
     Type: String
-    Default: 10.0.0.0/16
+    Default: 172.17.96.0/20
 
   PublicSubnet1CIDR:
     Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
     Type: String
-    Default: 10.0.0.0/24
+    Default: 172.17.96.0/24
 
 Resources:
   VPC:
@@ -60,3 +60,5 @@ Outputs:
     Value: !Ref PublicSubnet1
     Export:
       Name: PubSubName
+
+# routetableの作成
