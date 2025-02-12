@@ -52,11 +52,11 @@ Resources:
 
 Outputs:
   myVPC:
-    Value: VPC
+    Value: !Ref VPC
     Export:
-      Name:VPC-hirose 
-
+      Name: VPC-hirose 
+      
   PublicSubnet1:
-    Value: PublicSubnet1
+    Value: !Ref PublicSubnet1
     Export:
       Name: PubSubName
