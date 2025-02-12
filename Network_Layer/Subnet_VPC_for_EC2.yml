@@ -1,9 +1,8 @@
 Parameters:
   EnvironmentName:
     Description: An environment name that is prefixed to resource names
-    Type: String 
+    Type: String
     Default: hirose-test
-    
 
   VpcCIDR:
     Description: Please enter the IP range (CIDR notation) for this VPC
@@ -35,6 +34,7 @@ Resources:
 
   InternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
+    DependsOn: InternetGateway
     Properties:
       InternetGatewayId: !Ref InternetGateway
       VpcId: !Ref VPC
@@ -43,22 +43,43 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      AvailabilityZone: !Select [0, !GetAZs ""]
       CidrBlock: !Ref PublicSubnet1CIDR
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
 
+  # routetableの作成
+  myRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: hirose-rt
+  # サブネットへの関連付け、IGWへの穴あけ
+  myRoute:
+    Type: AWS::EC2::Route
+    DependsOn: myRouteTable
+    Properties:
+      RouteTableId: !Ref myRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  mySubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref myRouteTable      
+
 Outputs:
   myVPC:
     Value: !Ref VPC
     Export:
-      Name: VPC-hirose 
-      
+      Name: VPC-hirose
+
   PublicSubnet1:
     Value: !Ref PublicSubnet1
     Export:
       Name: PubSubName
-
-# routetableの作成

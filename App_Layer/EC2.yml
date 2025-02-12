@@ -10,8 +10,12 @@ Resources:
       - !ImportValue SG-hirose
 
     Tags:
-      - Key: key
-        Value: value
+      - Key: Name
+        Value: hirose-ec2
 
 
-# EIP,Nameタグの付与が必要
+# EIP付与が必要
+myEIP:
+  Type: AWS::EC2::EIP
+  Properties:
+    InstanceId: !Ref myEC2Instance
