@@ -12,3 +12,6 @@ Resources:
     Tags:
       - Key: key
         Value: value
+
+
+# EIP,Nameタグの付与が必要
