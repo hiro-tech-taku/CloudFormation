@@ -1,9 +1,9 @@
-myEC2Instance:
+Resources:
+ myEC2Instance:
   Type: AWS::EC2::Instance
   Properties:
-    KeyName: 
-    DisableApiTermination: 
-    ImageId: 
+    KeyName: awsc-key-285-hirose-01
+    ImageId: ami-022282eb775c6a4fa
     InstanceType: t2.micro 
     Monitoring: false
     SecurityGroupIds:
