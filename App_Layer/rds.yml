@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  Description": "AWS CloudFormation Sample Template for creating an Amazon RDS DB instance: 
+  Sample template showing how to create a DB instance with Enhanced Monitoring enabled. 
+  **WARNING** This template creates an RDS DB instance. You will be billed for the AWS 
+  resources used if you create a stack from this template.
+
+Resources:
+  MyDB:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      DBName: awscHiroseRds
+      DBInstanceClass: db.t3.micro
+      AllocatedStorage: 10
+      Engine: MySQL
+      EngineVersion: 8.0.33
+      MasterUsername: hirose
+      MasterUserPassword: Hirose123456!
+      VPCSecurityGroups:
+        - !Ref ApplicationDatabaseSecurityGroup
+      DBSubnetGroupName: !Ref ApplicationDatabaseSubnetGroup
+      MultiAZ: "false"
+      AvailabilityZone: !Sub ${AWS::Region}a
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-db
+
+  ApplicationDatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: myDBSubnetGroup Description
+      SubnetIds:
+      # 外部テンプレートファイルからsubnetIDの参照を考える。
+        - # 1 your subnet ID
+        - # 2 your subnet ID
+      Tags:
+      - Key: Name
+        Value: hirose-DB-SG
+
+  ApplicationDatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub ${AWS::StackName} Application Database Security Group
+      # 外部テンプレートファイルからVpcIDの参照を考える。
+      VpcId: # your VPC ID
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 3306
+        ToPort: 3306
+        CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-db-sg
