@@ -7,7 +7,7 @@ Resources:
     InstanceType: t2.micro 
     Monitoring: false
     SecurityGroupIds:
-      - !ImportValue SG-hirose
+      - !ImportValue SG-hirose-22
     VpcId:
       - !ImportValue VPC-hirose   
     SubnetId:
