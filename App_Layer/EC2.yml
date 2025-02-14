@@ -8,6 +8,10 @@ Resources:
     Monitoring: false
     SecurityGroupIds:
       - !ImportValue SG-hirose
+    VpcId:
+      - !ImportValue VPC-hirose   
+    SubnetId:
+      -  !ImportValue PubSubName-1a
 
     Tags:
       - Key: Name
