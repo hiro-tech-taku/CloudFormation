@@ -8,7 +8,7 @@ Resources:
       Tags:
         - Key: Name
           Value: HiroseVPCfromCF
-  subnetName:
+  subnetName1:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: ap-northeast-1a
@@ -16,7 +16,17 @@ Resources:
       CidrBlock: 172.17.128.0/24
       Tags:
         - Key: Name
-          Value: HiroseSubnet
+          Value: HiroseSubnet-1a
+  subnetName2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-northeast-1c
+      VpcId: !Ref myVPC
+      CidrBlock: 172.17.128.16/24
+      Tags:
+        - Key: Name
+          Value: HiroseSubnet-1c
+
   secGroupName:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -33,9 +43,14 @@ Resources:
           Value: HiroseSG
 Outputs:
   Subnet1:
-    Value: !Ref subnetName
+    Value: !Ref subnetName1
     Export:
-      Name: Subnet1Name
+      Name: Subnet-1a-Name
+  Subnet2:
+    Value: !Ref subnetName2
+    Export:
+      Name: Subnet-1c-Name
+
   SG1:
     Value: !Ref secGroupName
     Export:

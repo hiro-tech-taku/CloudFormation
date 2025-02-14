@@ -18,6 +18,6 @@ Resources:
           Value: hirose server
       SecurityGroupId: 
         - !ImportValue SG1Name
-      SubnetId: !ImportValue Subnet1Name
+      SubnetId: !ImportValue Subnet-1a-Name
 
 
