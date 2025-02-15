@@ -15,6 +15,11 @@ Resources:
 
 Outputs:
   MySecurityGroup:
-    Value: !Ref SecurityGroup
+    Description: The security group ID to use for public web servers
+    Value: 
+      'Fn::GetAtt':
+        - SecurityGroup
+        - GroupId
     Export: 
-      Name: SG-hirose-80
+      Name: 
+        'Fn::Sub': '${AWS::StackName}-SecurityGroupID'
