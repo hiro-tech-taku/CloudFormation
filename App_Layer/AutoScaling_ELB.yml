@@ -1,0 +1,92 @@
+Resources:
+  myLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
+      LaunchTemplateData:
+        ImageId: ami-022282eb775c6a4fa
+        InstanceType: t2.micro
+        IamInstanceProfile:
+          Name: !Ref myInstanceProfile
+        SecurityGroupIds:
+         - Fn::ImportValue:
+                !Sub "SGHirose-SecurityGroupID"
+        UserData:
+          Fn::Base64: !Sub |
+            #!/bin/bash
+            cd /tmp
+            yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+            systemctl enable amazon-ssm-agent
+            systemctl start amazon-ssm-agent
+        TagSpecifications:
+        - ResourceType: instance
+          Tags:
+          - Key: Name
+            Value: hirose-ec2
+  myInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: InstanceRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: 'Allow'
+          Principal:
+            Service:
+            - 'ec2.amazonaws.com'
+          Action:
+          - 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/myCustomerManagedPolicy'
+  myInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: '/'
+      Roles:
+      - !Ref myInstanceRole
+
+  TargetGroup: 
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties: 
+      VpcId: !Ref VPC
+      Name: !Sub "${PJPrefix}-tg"
+      # ターゲットにトラフィックをルーティングするために使用するプロトコル
+      Protocol: HTTP
+      Port: 80
+      # ターゲットでヘルスチェックを実行するときにロードバランサーが使用するプロトコル
+      HealthCheckProtocol: HTTP
+      # ヘルスチェックのターゲットの送信先である
+      HealthCheckPath: "/"
+      # ターゲットでヘルスチェックを実行するときにロードバランサーが使用するポート
+      HealthCheckPort: "traffic-port"
+      # 非正常なインスタンスが正常であると見なすまでに必要なヘルスチェックの連続成功回数
+      HealthyThresholdCount: 2
+      # ターゲットが異常であると見なされるまでに必要なヘルスチェックの連続失敗回数
+      UnhealthyThresholdCount: 2
+      # ヘルスチェックを失敗と見なす、ターゲットからレスポンスがない時間
+      HealthCheckTimeoutSeconds: 5
+      # 個々のターゲットのヘルスチェックの概算間隔 
+      HealthCheckIntervalSeconds: 10
+      # ターゲットからの正常なレスポンスを確認するために使用する HTTP コード
+      Matcher: 
+        HttpCode: 200
+      Tags: 
+        - Key: Name
+          Value: !Sub "${PJPrefix}-tg"
+
+  
+
+
+  myServerGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      VPCZoneIdentifier:
+        - !ImportValue PubSubName-1a
+        - !ImportValue PubSubName-1c
+      LaunchTemplate:
+        LaunchTemplateId: !Ref myLaunchTemplate
+        Version: !GetAtt myLaunchTemplate.LatestVersionNumber
+      MaxSize: '3'
+      MinSize: '1'
+      TargetGroupARNs:
+        - !Ref myTargetGroup
