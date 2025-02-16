@@ -53,8 +53,7 @@ Resources:
           AssignPublicIp: ENABLED
           SecurityGroups:
             - Fn::ImportValue:
-                !Sub "VPCHirose-SecurityGroupID"
+                !Sub "SGHirose-SecurityGroupID"
           Subnets:
             - Fn::ImportValue:
                 !Sub "VPCHirose-SubnetID"
-      
