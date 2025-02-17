@@ -12,6 +12,7 @@ Resources:
       Tags: 
         - Key: Name
           Value: SGForEC2
+      VpcId: !ImportValue VPC-hirose
 
 Outputs:
   MySecurityGroup:

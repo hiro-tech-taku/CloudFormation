@@ -112,8 +112,7 @@ Outputs:
   PublicSubnet1:
     Value: !Ref PublicSubnet1
     Export:
-      Name: 
-        'Fn::Sub': '${AWS::StackName}-SubnetID'
+      Name: PubSubName-1a
 
   PublicSubnet2:
     Value: !Ref PublicSubnet2
