@@ -33,7 +33,7 @@ Resources:
           Name: !Ref myInstanceProfile
         SecurityGroupIds:
          - Fn::ImportValue:
-                !Sub "SGHirose-SecurityGroupID"
+                !Sub "SG-hirose-22-SecurityGroupID"
         UserData:
           Fn::Base64: !Sub |
             #!/bin/bash
@@ -51,10 +51,8 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       VPCZoneIdentifier:
-        - Fn::ImportValue:
-                !Sub "VPCHirose-SubnetID"
-        - Fn::ImportValue:
-                !Sub "VPCHirose-SubnetID"
+        - !ImportValue "PubSubName-1a-SubnetID" #Exportされた値を読み込めないので明日もやってみる。
+        - !ImportValue "PubSubName-1c-SubnetID" #Exportされた値を読み込めないので明日もやってみる。
       LaunchTemplate:
         LaunchTemplateId: !Ref myLaunchTemplate
         Version: !GetAtt myLaunchTemplate.LatestVersionNumber

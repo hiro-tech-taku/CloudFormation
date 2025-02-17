@@ -97,7 +97,8 @@ Outputs:
 
   PublicSubnet1:
     Value: !Ref PublicSubnet1
-    Export: PubSubName-1a
+    Export: 
+      Name: PubSubName-1a
         
 
   PublicSubnet2:
