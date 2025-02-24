@@ -66,7 +66,6 @@ Resources:
         - Key: Name
           Value: !Sub ${EnvironmentName} Public Subnet (AZ2)
 
-  # routetableの作成
   myRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -74,7 +73,7 @@ Resources:
       Tags:
         - Key: Name
           Value: hirose-rt
-  # サブネットへの関連付け、IGWへの穴あけ
+
   myRoute:
     Type: AWS::EC2::Route
     DependsOn: myRouteTable
@@ -88,20 +87,7 @@ Resources:
     Properties:
       SubnetId: !Ref PublicSubnet1
       RouteTableId: !Ref myRouteTable  
-
-  SecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: SecurityGroup for EC2
-      GroupName: SG-hirose
-      SecurityGroupIngress:
-       - IpProtocol: tcp
-         FromPort: 80
-         ToPort: 80
-         CidrIp: 0.0.0.0/0
-      Tags: 
-        - Key: Name
-          Value: SGForEC2    
+ 
 
 Outputs:
   myVPC:
@@ -119,13 +105,4 @@ Outputs:
     Export:
       Name: PubSubName-1c
 
-  MySecurityGroup:
-    Description: The security group ID to use for public web servers
-    Value: 
-      'Fn::GetAtt':
-        - SecurityGroup
-        - GroupId
-    Export: 
-      Name: 
-        'Fn::Sub': '${AWS::StackName}-SecurityGroupID'
 

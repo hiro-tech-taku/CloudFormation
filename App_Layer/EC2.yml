@@ -6,20 +6,17 @@ Resources:
     ImageId: ami-022282eb775c6a4fa
     InstanceType: t2.micro 
     Monitoring: false
-    SecurityGroupIds:
-      - !ImportValue SG-hirose-22
-    VpcId:
-      - !ImportValue VPC-hirose   
-    SubnetId:
-      -  !ImportValue PubSubName-1a
-
+    SecurityGroupIds: 
+      - sg-05b78ca3e3ebc7791
+    VpcId: vpc-0a0948b0c0d4b5813   
+    SubnetId: subnet-0cf76bbf21836202b
     Tags:
       - Key: Name
         Value: hirose-ec2
 
 
 # EIP付与が必要
-myEIP:
+ myEIP:
   Type: AWS::EC2::EIP
   Properties:
     InstanceId: !Ref myEC2Instance
