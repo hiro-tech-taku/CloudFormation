@@ -8,3 +8,4 @@ Outputsセクション（参照元）とImportValue関数（参照先）を使�
 https://dev.classmethod.jp/articles/cfn-cross-stack-reference/
 
 # 他にCloudFormationで気になることがあれば追記予定
+　EC2のUserDataの書き方も調べる。
